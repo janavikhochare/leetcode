@@ -1,1 +1,39 @@
 286. Walls and Gates
+
+
+    def wallsAndGates(self, rooms):
+        """
+        :type rooms: List[List[int]]
+        :rtype: None Do not return anything, modify rooms in-place instead.
+        """
+        # solved it by myself in a single attempt.. super proud
+        #  similar logic as rotten oranges.like this is a multi- source BFS problem
+        #so basically first put all of the gates in the queue and then after that run normal bfs on them and increase the count after each for loop.
+        #  and then update the rooms with the count values.
+
+        rows, cols = len(rooms), len(rooms[0])
+
+        q = collections.deque()
+        visited = set()
+
+        for r in range(rows):
+            for c in range(cols):
+                if rooms[r][c] == 0:
+                    q.append((r,c))
+                    visited.add((r,c))
+        
+        neighbors =[[1,0],[-1,0],[0,1],[0,-1]]
+        count = 1
+        while q:
+            for i in range(len(q)):
+                row, col = q.popleft()
+                for dr, dc in neighbors:
+                    r = row + dr
+                    c = col + dc
+                    if (r in range(rows)) and (c in range(cols)) and ((r,c) not in visited) and (rooms[r][c] == 2147483647):
+                        rooms[r][c] = count
+                        q.append((r,c))
+                        visited.add((r,c))
+            count +=1
+        
+        return rooms
