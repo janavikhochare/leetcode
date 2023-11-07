@@ -1,0 +1,38 @@
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # Couldn't solve it by myself. 
+        # first create a dict of all the numCourses and assign them to a empty list.
+        # Then just append the prerequisite courses to this dict
+        # create a set for appending the visited elements
+        # write a dfs solution, write base conditions of t/f, add the element crs to visisted then call for all the pre in the preMap[crs] and run dfs over them
+        # remove the element from the visited an assign preMap[crs] =[].
+        # now run the dfs for all the numCourses.and run dfs thru them
+
+        preMap = { i:[] for i in range(numCourses)}
+
+        for crs, pre in prerequisites:
+            preMap[crs].append(pre)
+        
+        visited = set()
+
+        def dfs(crs):
+            if crs in visited: 
+                return False
+            
+            if preMap[crs] == []:
+                return True
+            
+            visited.add(crs)
+
+            for pre in preMap[crs]:
+                if not dfs(pre):
+                    return False   
+            visited.remove(crs)
+            preMap[crs] = []
+                  
+            return True
+            
+        for crs in range(numCourses):
+            if not dfs(crs):
+                return False
+        return True
+        
